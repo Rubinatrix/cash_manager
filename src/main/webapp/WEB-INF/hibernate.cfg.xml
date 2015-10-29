@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+		
+<hibernate-configuration>
+  <session-factory>
+  	<!-- We're using HyperSQL database so the dialect needs to HSQL as well-->
+    <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+    <!-- Enable this to see the SQL statements in the logs-->
+    <property name="show_sql">true</property>
+    <!-- This will modify our existing database-->
+    <property name="hbm2ddl.auto">update</property>
+    <!-- For encoding - with HSQLDB it's not necessary, but can be for some other DBMS types-->
+    <property name="hibernate.connection.useUnicode">true</property>
+    <property name="hibernate.connection.characterEncoding">UTF-8</property>
+    <property name="hibernate.connection.characterSetResults">UTF-8</property>
+  </session-factory>
+</hibernate-configuration>
