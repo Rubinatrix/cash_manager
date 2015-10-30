@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 import org.hibernate.Query;
+import utils.AppException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,9 +34,9 @@ public class UserService  {
 
     }
 
-    public User registerNewUserAccount(UserDTO accountDTO) throws Exception {
+    public User registerNewUserAccount(UserDTO accountDTO) throws AppException {
         if (nameExist(accountDTO.getUsername())) {
-            throw new Exception("There is an account with that name: " + accountDTO.getUsername());
+            throw new AppException("There is an account with that name: " + accountDTO.getUsername());
         }
         //----------------------------------------------------
         User user = new User();

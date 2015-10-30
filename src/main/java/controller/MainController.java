@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import service.UserService;
+import utils.AppException;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -75,7 +76,7 @@ public class MainController {
         User registered = null;
         try {
             registered = userService.registerNewUserAccount(accountDTO);
-        } catch (Exception e) {
+        } catch (AppException e) {
             return null;
         }
         return registered;
