@@ -20,12 +20,12 @@ public class Transaction {
     private TransactionType type;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "WALLET_ID")
-    private Wallet wallet;
+    @JoinColumn(name = "ACCOUNT_ID")
+    private Account account;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "WALLET_TO_ID")
-    private Wallet walletTo;
+    @JoinColumn(name = "ACCOUNT_TO_ID")
+    private Account accountTo;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CATEGORY_ID")
@@ -40,14 +40,14 @@ public class Transaction {
     @Column(name="AMOUNT")
     private int amount;
 
-    public String getStringAmount(Wallet wallet) {
+    public String getStringAmount(Account account) {
         switch (type) {
             case DEPOSIT:
                 return "+"+this.amount;
             case WITHDRAW:
                 return "-"+this.amount;
             case TRANSFER:
-                if (this.wallet == wallet) {
+                if (this.account == account) {
                     return "-"+this.amount;
                 } else {
                     return "+"+this.amount;
@@ -97,20 +97,20 @@ public class Transaction {
         this.id = id;
     }
 
-    public Wallet getWallet() {
-        return wallet;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public Wallet getWalletTo() {
-        return walletTo;
+    public Account getAccountTo() {
+        return accountTo;
     }
 
-    public void setWalletTo(Wallet walletTo) {
-        this.walletTo = walletTo;
+    public void setAccountTo(Account accountTo) {
+        this.accountTo = accountTo;
     }
 
     public TransactionType getType() {

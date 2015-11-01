@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Transaction</title>
+<title>Cash manager</title>
 </head>
 <body>
 
@@ -31,10 +31,10 @@
         </tr>
 
 		<tr>
-        	<td><form:label path="wallet">From:</form:label></td>
-        	<td><form:select required="required" path="wallet">
-        	<c:forEach items="${walletAttribute}" var="wallet">
-               	<option value="${wallet.id}" <c:if test="${wallet.id==transactionAttribute.wallet.id}">selected</c:if>>${wallet.name}</option>
+        	<td><form:label path="account">From:</form:label></td>
+        	<td><form:select required="required" path="account">
+        	<c:forEach items="${accountAttribute}" var="account">
+               	<option value="${account.id}" <c:if test="${account.id==transactionAttribute.account.id}">selected</c:if>>${account.name}</option>
             </c:forEach>
             </form:select></td>
         </tr>
@@ -74,7 +74,7 @@
         </tr>
 
 		<tr>
-            <td><form:input type="hidden" value="0" path="walletTo"/></td>
+            <td><form:input type="hidden" value="0" path="accountTo"/></td>
         </tr>
 
 	</table>

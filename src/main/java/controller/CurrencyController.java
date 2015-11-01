@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import service.CurrencyService;
+import utils.CashManagerException;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -52,14 +53,21 @@ public class CurrencyController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String getDelete(@RequestParam("id") Long currencyId) {
+    public String getDelete(@RequestParam("id") Long currencyId, Model model) {
         logger.debug("Received request to delete currency");
 
-        if (currencyService.delete(currencyId)) {
-            return "redirect:list";
-        } else {
-            return "redirect:/app/errorpage?type=CURRENCY_DELETE";
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Currency> currencies = currencyService.getAllByUser(user);
+        model.addAttribute("currencies", currencies);
+        model.addAttribute("username", user.getUsername());
+
+        try {
+            currencyService.delete(currencyId);
+        } catch (CashManagerException e){
+            model.addAttribute("errorDescription", e.getMessage());
         }
+
+        return "currency-list";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)

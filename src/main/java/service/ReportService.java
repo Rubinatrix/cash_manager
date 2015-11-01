@@ -1,7 +1,6 @@
 package service;
 
 import domain.Currency;
-import domain.Transaction;
 import domain.TransactionType;
 import domain.User;
 import org.apache.log4j.Logger;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
 import java.util.*;
 
 @Service("reportService")
@@ -31,7 +29,7 @@ public class ReportService {
     public List<Object> getCategoryAmount(User user, Currency currency, TransactionType transactionType, Date from, Date to) {
         logger.debug("Retrieving category report strings");
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("SELECT t.category.name, -SUM(t.amount) FROM Transaction t WHERE t.wallet.user = :user AND t.wallet.currency = :currency AND t.date >= :from AND t.date <= :to GROUP BY t.type, t.category.id, t.category.name HAVING t.type = :type ORDER BY -SUM(t.amount)");
+        Query query = session.createQuery("SELECT t.category.name, -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type, t.category.id, t.category.name ORDER BY -SUM(t.amount)");
         query.setParameter("type", transactionType);
         query.setParameter("currency", currency);
         query.setParameter("user", user);
@@ -43,7 +41,7 @@ public class ReportService {
     public Long getTotalCategoryAmount(User user, Currency currency, TransactionType transactionType, Date from, Date to) {
         logger.debug("Retrieving category report total amount");
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("SELECT -SUM(t.amount) FROM Transaction t WHERE t.wallet.user = :user AND t.wallet.currency = :currency AND t.category is not null AND t.date >= :from AND t.date <= :to GROUP BY t.type HAVING t.type = :type");
+        Query query = session.createQuery("SELECT -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.category is not null AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type");
         query.setParameter("type", transactionType);
         query.setParameter("currency", currency);
         query.setParameter("user", user);
@@ -59,7 +57,7 @@ public class ReportService {
 
         Map<String, Long> map = new HashMap<>();
 
-        Query query_deposit = session.createQuery("SELECT t.recipient, -SUM(t.amount) FROM Transaction t WHERE t.wallet.user = :user AND t.wallet.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to GROUP BY t.type, t.recipient HAVING t.type = :type");
+        Query query_deposit = session.createQuery("SELECT t.recipient, -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type, t.recipient");
         query_deposit.setParameter("type", TransactionType.DEPOSIT);
         query_deposit.setParameter("currency", currency);
         query_deposit.setParameter("user", user);
@@ -68,7 +66,7 @@ public class ReportService {
         query_deposit.setParameter("blank", "");
         List<Object> res_deposit = query_deposit.list();
 
-        Query query_withdraw = session.createQuery("SELECT t.recipient, SUM(t.amount) FROM Transaction t WHERE t.wallet.user = :user AND t.wallet.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to GROUP BY t.type, t.recipient HAVING t.type = :type");
+        Query query_withdraw = session.createQuery("SELECT t.recipient, SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type, t.recipient");
         query_withdraw.setParameter("type", TransactionType.WITHDRAW);
         query_withdraw.setParameter("currency", currency);
         query_withdraw.setParameter("user", user);
@@ -112,7 +110,7 @@ public class ReportService {
 
         Map<String, Long> map = new HashMap<>();
 
-        Query query_deposit = session.createQuery("SELECT -SUM(t.amount) FROM Transaction t WHERE t.wallet.user = :user AND t.wallet.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to GROUP BY t.type HAVING t.type = :type");
+        Query query_deposit = session.createQuery("SELECT -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type");
         query_deposit.setParameter("type", TransactionType.DEPOSIT);
         query_deposit.setParameter("currency", currency);
         query_deposit.setParameter("user", user);
@@ -124,7 +122,7 @@ public class ReportService {
             result_deposit = Long.valueOf(0);
         }
 
-        Query query_withdraw = session.createQuery("SELECT SUM(t.amount) FROM Transaction t WHERE t.wallet.user = :user AND t.wallet.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to GROUP BY t.type HAVING t.type = :type");
+        Query query_withdraw = session.createQuery("SELECT SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type");
         query_withdraw.setParameter("type", TransactionType.WITHDRAW);
         query_withdraw.setParameter("currency", currency);
         query_withdraw.setParameter("user", user);

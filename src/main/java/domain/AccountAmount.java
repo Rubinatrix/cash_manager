@@ -3,8 +3,8 @@ package domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name="WALLET_AMOUNT")
-public class WalletAmount {
+@Table(name="ACCOUNT_AMOUNT")
+public class AccountAmount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,19 +12,19 @@ public class WalletAmount {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "WALLET_ID")
-    private Wallet wallet;
+    @JoinColumn(name = "ACCOUNT_ID")
+    private Account account;
 
     @Column(name = "AMOUNT")
     private Integer amount;
 
-    public WalletAmount(){
+    public AccountAmount(){
 
     }
 
-    public WalletAmount(Wallet wallet, Integer amount)
+    public AccountAmount(Account account, Integer amount)
     {
-        this.wallet = wallet;
+        this.account = account;
         this.amount = amount;
     }
 
@@ -36,12 +36,12 @@ public class WalletAmount {
         this.id = id;
     }
 
-    public Wallet getWallet() {
-        return wallet;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public Integer getAmount() {

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Category</title>
+<title>Cash manager</title>
 </head>
 <body>
 

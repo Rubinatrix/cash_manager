@@ -6,22 +6,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Wallet</title>
+<title>Cash manager</title>
 </head>
 <body>
 
 <c:choose>
     <c:when test="${type=='edit'}">
-		<c:url var="saveUrl" value="/app/wallet/edit?id=${walletAttribute.id}" />
-		<h2>edit Wallet</h2>
+		<c:url var="saveUrl" value="/app/account/edit?id=${accountAttribute.id}" />
+		<h2>edit Account</h2>
     </c:when>
     <c:when test="${type=='add'}">
-    	<c:url var="saveUrl" value="/app/wallet/add" />
-    	<h2>new Wallet</h2>
+    	<c:url var="saveUrl" value="/app/account/add" />
+    	<h2>new Account</h2>
     </c:when>
 </c:choose>
 
-<form:form modelAttribute="walletAttribute" method="POST" action="${saveUrl}">
+<form:form modelAttribute="accountAttribute" method="POST" action="${saveUrl}">
 	<table>
 		<tr>
 			<td><form:label path="name">Name:</form:label></td>
@@ -32,7 +32,7 @@
 			<td><form:label path="currency">Currency:</form:label></td>
 			<td><form:select required="required" path="currency">
 			<c:forEach items="${currencyAttribute}" var="currency">
-            	<option value="${currency.id}" <c:if test="${currency.id==walletAttribute.currency.id}">selected</c:if>>${currency.name}</option>
+            	<option value="${currency.id}" <c:if test="${currency.id==accountAttribute.currency.id}">selected</c:if>>${currency.name}</option>
             </c:forEach>
            	</form:select></td>
         </tr>

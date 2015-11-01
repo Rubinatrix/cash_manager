@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Transactions: ${username}</title>
+<title>Cash manager</title>
 </head>
 <body>
 
@@ -14,15 +14,15 @@
 <c:url var="deleteImgUrl" value="/resources/img/delete.png" />
 <c:url var="addRegularUrl" value="/app/transaction/add/regular" />
 <c:url var="addTransferUrl" value="/app/transaction/add/transfer" />
-<c:url var="homeUrl" value="/app/homepage" />
+<c:url var="settingsUrl" value="/app/settings" />
 <c:url var="logoutUrl" value="/app/logout"/>
 
 <table style="width: 100%">
 
 <tr>
 <td style="text-align:left">
-<p><a href="${homeUrl}">home</a></p>
-<h1>Transactions</h1>
+<p><a href="${settingsUrl}"><< Settings</a></p>
+<h1>All transactions</h1>
 </td>
 <td style="text-align:right; vertical-align:top">
 Logged as <b>${username}</b>
@@ -37,8 +37,8 @@ Logged as <b>${username}</b>
 	<thead style="background:#d3dce3">
 		<tr>
 			<th>Date</th>
-			<th>Wallet</th>
-			<th>Category|Wallet</th>
+			<th>Account</th>
+			<th>Category|Account</th>
 			<th>Recipient</th>
 			<th>Comment</th>
             <th>Type</th>
@@ -52,11 +52,11 @@ Logged as <b>${username}</b>
 		<c:url var="deleteUrl" value="/app/transaction/delete?id=${transaction.id}" />
 		<fmt:formatDate value="${transaction.date}" var="datetime" pattern="yyyy-MM-dd HH:mm"/>
 		<tr>
-			<td><c:out value="${datetime}" /></td>
-			<td><c:out value="${transaction.wallet.name}" /></td>
+			<td style = "width: 130px"><c:out value="${datetime}" /></td>
+			<td><c:out value="${transaction.account.name}" /></td>
 			<c:choose>
                 <c:when test="${transaction.type=='TRANSFER'}">
-                    <td><c:out value="${transaction.walletTo.name}" /></td>
+                    <td><c:out value="${transaction.accountTo.name}" /></td>
                 </c:when>
                 <c:otherwise>
                     <td><c:out value="${transaction.category.name}" /></td>
@@ -66,8 +66,8 @@ Logged as <b>${username}</b>
             <td><c:out value="${transaction.comment}" /></td>
 			<td><c:out value="${transaction.type}" /></td>
 			<td><c:out value="${transaction.amount}" /></td>
-			<td><a href="${editUrl}"><img src="${editImgUrl}"></img></a></td>
-			<td><a href="${deleteUrl}"><img src="${deleteImgUrl}"></img></a></td>
+			<td style = "width: 40px"><a href="${editUrl}"><img src="${editImgUrl}"></img></a></td>
+			<td style = "width: 40px"><a href="${deleteUrl}"><img src="${deleteImgUrl}"></img></a></td>
 		</tr>
 	</c:forEach>
 	</tbody>

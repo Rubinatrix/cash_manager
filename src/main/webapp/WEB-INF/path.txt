@@ -1,10 +1,4 @@
-localhost:8080/cash_manager/app/main/record/list
-localhost:8080/cash_manager/app/wallet/list
-
-insert into USERS(ID,USERNAME,PASSWORD)values(1, 'admin','admin')
-insert into USERS(ID,USERNAME,PASSWORD)values(2, 'user','user')
-insert into USER_ROLE(USER_ID,ROLE_ID)values(1, 1)
-insert into USER_ROLE(USER_ID,ROLE_ID)values(2, 2)
+localhost:8080/cash_manager/app/account/list
 
 +1. Запретить удалять карренси
 +2. Удалять воллеты с
@@ -49,8 +43,5 @@ insert into USER_ROLE(USER_ID,ROLE_ID)values(2, 2)
 +34. Сделать отчет по категориям
 +35. Сделать отчет по получателям
 +36. Сделать меню отчетов
-
-???прочее:
-1. Изменить информирование об ошибках на резалт.реджект
-2. Добавить мой эксепшн
-3. Добавить возможность фильтровать транзакции по условию
++37. Изменить информирование об ошибках на резалт.реджект
++38. Добавить мой эксепшн

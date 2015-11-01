@@ -5,20 +5,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Reports: ${username}</title>
+<title>Cash manager</title>
 </head>
 <body>
 
-<c:url var="homeUrl" value="/app/homepage" />
 <c:url var="logoutUrl" value="/app/logout"/>
 <c:url var="reportCategoryUrl" value="/app/report/category"/>
 <c:url var="reportRecipientUrl" value="/app/report/recipient"/>
+<c:url var="accountUrl" value="/app/account/list"/>
+<c:url var="transactionUrl" value="/app/transaction/list/all"/>
 
 <table style="width: 100%">
 
 <tr>
 <td style="text-align:left">
-<p><a href="${homeUrl}">home</a></p>
+<h3><a href="${accountUrl}">Accounts</a></h3>
 <h1>Reports</h1>
 </td>
 <td style="text-align:right; vertical-align:top">
@@ -29,9 +30,9 @@ Logged as <b>${username}</b>
 
 <tr>
 <td COLSPAN=2>
-<h2><a href="${reportCategoryUrl}">Cash flow by categories</a></h2>
-<h2><a href="${reportRecipientUrl}">Borrows/takings by recipients</a></h2>
-
+<h3>* <a href="${reportCategoryUrl}">Cash flow by categories</a></h3>
+<h3>* <a href="${reportRecipientUrl}">Cash amount by recipients</a></h3>
+<h3>* <a href="${transactionUrl}">All transactions list</a></h3>
 </td>
 </tr>
 

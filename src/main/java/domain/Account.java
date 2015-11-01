@@ -3,8 +3,8 @@ package domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name="WALLETS")
-public class Wallet {
+@Table(name="ACCOUNTS")
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

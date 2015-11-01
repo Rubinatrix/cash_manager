@@ -1,15 +1,14 @@
 package service;
 
-import domain.Transaction;
-import domain.User;
-import domain.Wallet;
-import domain.WalletAmount;
+import domain.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import utils.CashManagerErrorType;
+import utils.CashManagerException;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -23,30 +22,30 @@ public class TransactionService {
 
     protected static Logger logger = Logger.getLogger("org/service");
 
-    @Resource(name="sessionFactory")
+    @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
     public List<Transaction> getAll() {
         logger.debug("Retrieving all transactions");
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("SELECT t FROM Transaction as t ORDER BY t.date DESC");
-        return  query.list();
+        Query query = session.createQuery("SELECT t FROM Transaction as t ORDER BY t.date DESC, t.id DESC");
+        return query.list();
     }
 
     public List<Transaction> getAllByUser(User user) {
         logger.debug("Retrieving all transactions");
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("SELECT t FROM Transaction as t WHERE t.wallet.user = :user ORDER BY t.date DESC");
+        Query query = session.createQuery("SELECT t FROM Transaction as t WHERE t.account.user = :user ORDER BY t.date DESC, t.id DESC");
         query.setParameter("user", user);
-        return  query.list();
+        return query.list();
     }
 
-    public List<Transaction> getAllByWallet(Wallet wallet) {
-        logger.debug("Retrieving transactions by specified wallet");
+    public List<Transaction> getAllByAccount(Account account) {
+        logger.debug("Retrieving transactions by specified account");
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("SELECT t FROM Transaction as t WHERE t.wallet = :wallet OR t.walletTo = :wallet ORDER BY t.date DESC");
-        query.setParameter("wallet", wallet);
-        return  query.list();
+        Query query = session.createQuery("SELECT t FROM Transaction as t WHERE t.account = :account OR t.accountTo = :account ORDER BY t.date DESC, t.id DESC");
+        query.setParameter("account", account);
+        return query.list();
     }
 
     public Transaction get(Long id) {
@@ -55,11 +54,17 @@ public class TransactionService {
         return transaction;
     }
 
-    public void add(Transaction transaction) {
+    public void add(Transaction transaction) throws CashManagerException {
         logger.debug("Adding new transaction");
+
+        CashManagerErrorType errorType = checkTransaction(transaction);
+        if (errorType != null) {
+            throw new CashManagerException(errorType);
+        }
+
         Session session = sessionFactory.getCurrentSession();
 
-        // changing wallets amount according to transaction amount
+        // changing accounts amount according to transaction amount
         proceedTransaction(null, transaction);
 
         session.save(transaction);
@@ -70,26 +75,31 @@ public class TransactionService {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = (Transaction) session.get(Transaction.class, id);
 
-        // changing wallets amount according to transaction amount
+        // changing accounts amount according to transaction amount
         proceedTransaction(transaction, null);
 
         session.delete(transaction);
     }
 
-    public void edit(Transaction transaction) {
+    public void edit(Transaction transaction) throws CashManagerException {
         logger.debug("Editing existing transaction");
+
+        CashManagerErrorType errorType = checkTransaction(transaction);
+        if (errorType != null) {
+            throw new CashManagerException(errorType);
+        }
 
         Session session = sessionFactory.getCurrentSession();
 
         Transaction existingTransaction = (Transaction) session.get(Transaction.class, transaction.getId());
 
-        // changing wallets amount according to transaction amount
+        // changing accounts amount according to transaction amount
         proceedTransaction(existingTransaction, transaction);
 
         existingTransaction.setType(transaction.getType());
         existingTransaction.setAmount(transaction.getAmount());
-        existingTransaction.setWallet(transaction.getWallet());
-        existingTransaction.setWalletTo(transaction.getWalletTo());
+        existingTransaction.setAccount(transaction.getAccount());
+        existingTransaction.setAccountTo(transaction.getAccountTo());
         existingTransaction.setCategory(transaction.getCategory());
         existingTransaction.setRecipient(transaction.getRecipient());
         existingTransaction.setComment(transaction.getComment());
@@ -99,73 +109,82 @@ public class TransactionService {
         session.save(existingTransaction);
     }
 
-    private void changeAmount(Wallet wallet, Integer delta){
-        logger.debug("Changing existing wallet amount");
+    // returns null if there is no errors
+    private CashManagerErrorType checkTransaction(Transaction transaction) {
+        if ((transaction.getType() == TransactionType.TRANSFER) && (!transaction.getAccount().getCurrency().equals(transaction.getAccountTo().getCurrency()))) {
+            return CashManagerErrorType.TRANSFER_CROSS_CURRENCY;
+        } else {
+            return null;
+        }
+    }
+
+    private void changeAmount(Account account, Integer delta) {
+        logger.debug("Changing existing account amount");
 
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery("SELECT wa FROM WalletAmount as wa WHERE wa.wallet = :wallet");
-        query.setParameter("wallet", wallet);
-        WalletAmount walletAmount = (WalletAmount) query.uniqueResult();
-        walletAmount.setAmount(walletAmount.getAmount()+delta);
+        Query query = session.createQuery("SELECT wa FROM AccountAmount as wa WHERE wa.account = :account");
+        query.setParameter("account", account);
+        AccountAmount accountAmount = (AccountAmount) query.uniqueResult();
+        accountAmount.setAmount(accountAmount.getAmount() + delta);
 
-        session.save(walletAmount);
+        session.save(accountAmount);
     }
 
-    private void proceedTransaction(Transaction existingTransaction, Transaction newTransaction){
-        Map<Wallet, Integer> walletAmountMap = new HashMap<>();
-        if (existingTransaction != null){
+    private void proceedTransaction(Transaction existingTransaction, Transaction newTransaction) {
+        Map<Account, Integer> accountAmountMap = new HashMap<>();
+        if (existingTransaction != null) {
             Integer amount = existingTransaction.getAmount();
-            switch (existingTransaction.getType()){
+            switch (existingTransaction.getType()) {
                 case DEPOSIT:
-                    walletAmountMap.put(existingTransaction.getWallet(), - amount);
+                    accountAmountMap.put(existingTransaction.getAccount(), -amount);
                     break;
                 case WITHDRAW:
-                    walletAmountMap.put(existingTransaction.getWallet(), + amount);
+                    accountAmountMap.put(existingTransaction.getAccount(), +amount);
                     break;
                 case TRANSFER:
-                    walletAmountMap.put(existingTransaction.getWallet(), + amount);
-                    walletAmountMap.put(existingTransaction.getWalletTo(), - amount);
+                    accountAmountMap.put(existingTransaction.getAccount(), +amount);
+                    accountAmountMap.put(existingTransaction.getAccountTo(), -amount);
                     break;
             }
         }
         if (newTransaction != null) {
             Integer amount = newTransaction.getAmount();
-            Wallet wallet = newTransaction.getWallet();
-            Wallet walletTo = newTransaction.getWalletTo();
-            Integer beforeAmount = walletAmountMap.get(wallet);
-            Integer beforeAmountTo = walletAmountMap.get(walletTo);
-            switch (newTransaction.getType()){
+            Account account = newTransaction.getAccount();
+            Account accountTo = newTransaction.getAccountTo();
+            Integer beforeAmount = accountAmountMap.get(account);
+            Integer beforeAmountTo = accountAmountMap.get(accountTo);
+            switch (newTransaction.getType()) {
                 case DEPOSIT:
-                    if (beforeAmount != null){
-                        walletAmountMap.put(wallet, beforeAmount + amount);
+                    if (beforeAmount != null) {
+                        accountAmountMap.put(account, beforeAmount + amount);
                     } else {
-                        walletAmountMap.put(wallet, + amount);
+                        accountAmountMap.put(account, +amount);
                     }
                     break;
                 case WITHDRAW:
-                    if (beforeAmount != null){
-                        walletAmountMap.put(wallet, beforeAmount - amount);
+                    if (beforeAmount != null) {
+                        accountAmountMap.put(account, beforeAmount - amount);
                     } else {
-                        walletAmountMap.put(wallet, - amount);
+                        accountAmountMap.put(account, -amount);
                     }
                     break;
                 case TRANSFER:
-                    if (beforeAmount != null){
-                        walletAmountMap.put(wallet, beforeAmount - amount);
+                    if (beforeAmount != null) {
+                        accountAmountMap.put(account, beforeAmount - amount);
                     } else {
-                        walletAmountMap.put(wallet, - amount);
+                        accountAmountMap.put(account, -amount);
                     }
-                    if (beforeAmountTo != null){
-                        walletAmountMap.put(walletTo, beforeAmountTo + amount);
+                    if (beforeAmountTo != null) {
+                        accountAmountMap.put(accountTo, beforeAmountTo + amount);
                     } else {
-                        walletAmountMap.put(walletTo, + amount);
+                        accountAmountMap.put(accountTo, +amount);
                     }
                     break;
             }
         }
-        for (Wallet wallet: walletAmountMap.keySet()){
-            changeAmount(wallet, walletAmountMap.get(wallet));
+        for (Account account : accountAmountMap.keySet()) {
+            changeAmount(account, accountAmountMap.get(account));
         }
     }
 

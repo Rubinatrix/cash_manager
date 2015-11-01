@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import service.CategoryService;
+import utils.CashManagerException;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -52,13 +53,20 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String getDelete(@RequestParam("id") Long categoryId) {
+    public String getDelete(@RequestParam("id") Long categoryId, Model model) {
         logger.debug("Received request to delete category");
-        if (categoryService.delete(categoryId)) {
-            return "redirect:list";
-        } else {
-            return "redirect:/app/errorpage?type=CATEGORY_DELETE";
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Category> categories = categoryService.getAllByUser(user);
+        model.addAttribute("categories", categories);
+        model.addAttribute("username", user.getUsername());
+
+        try {
+            categoryService.delete(categoryId);
+        } catch (CashManagerException e) {
+            model.addAttribute("errorDescription", e.getMessage());
         }
+
+        return "category-list";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Transfer</title>
+<title>Cash manager</title>
 </head>
 <body>
 
@@ -30,20 +30,20 @@
         </tr>
 
 		<tr>
-        	<td><form:label path="wallet">From:</form:label></td>
-        	<td><form:select required="required" path="wallet">
-        	<c:forEach items="${walletAttribute}" var="wallet">
-               	<option value="${wallet.id}" <c:if test="${wallet.id==transactionAttribute.wallet.id}">selected</c:if>>${wallet.name}</option>
+        	<td><form:label path="account">From:</form:label></td>
+        	<td><form:select required="required" path="account">
+        	<c:forEach items="${accountAttribute}" var="account">
+               	<option value="${account.id}" <c:if test="${account.id==transactionAttribute.account.id}">selected</c:if>>${account.name}</option>
             </c:forEach>
             </form:select></td>
         </tr>
 
 		<tr>
-            <td><form:label path="walletTo">To:</form:label></td>
-            <td><form:select required="required" path="walletTo">
+            <td><form:label path="accountTo">To:</form:label></td>
+            <td><form:select required="required" path="accountTo">
             <option></option>
-            <c:forEach items="${walletAttribute}" var="wallet">
-               	<option value="${wallet.id}" <c:if test="${wallet.id==transactionAttribute.walletTo.id}">selected</c:if>>${wallet.name}</option>
+            <c:forEach items="${accountAttribute}" var="account">
+               	<option value="${account.id}" <c:if test="${account.id==transactionAttribute.accountTo.id}">selected</c:if>>${account.name}</option>
             </c:forEach>
             </form:select></td>
         </tr>
@@ -67,8 +67,13 @@
         </tr>
 
 	</table>
+
+	<p>
+    <form:errors element="div" style="color: red" />
+    </p>
 	
 	<input type="submit" value="Save" />
+
 </form:form>
 
 </body>

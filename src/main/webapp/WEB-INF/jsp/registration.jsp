@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Registration Form</title>
+<title>Cash manager</title>
 </head>
 <body>
 
@@ -31,7 +31,7 @@
 </table>
 
 <p>
-<form:errors element="div" cssStyle="color: #ff0000;" />
+<form:errors element="div" style="color: red" />
 </p>
 
 <p>

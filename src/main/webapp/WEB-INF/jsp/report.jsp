@@ -7,11 +7,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Report: ${username}</title>
+<title>Cash manager</title>
 </head>
 <body>
 
-<c:url var="homeUrl" value="/app/homepage" />
+<c:url var="accountUrl" value="/app/account/list"/>
 <c:url var="logoutUrl" value="/app/logout"/>
 <c:url var="reportsUrl" value="/app/report"/>
 
@@ -19,14 +19,14 @@
 
 <tr>
 <td style="text-align:left">
-<p><a href="${homeUrl}">home</a></p>
-<p><a href="${reportsUrl}">reports</a></p>
+<p><a href="${accountUrl}"><< Accounts</a></p>
+<p><a href="${reportsUrl}"><< Reports</a></p>
 <c:choose>
     <c:when test="${reportType=='category'}">
 		<h1>Cash flow by categories</h1>
     </c:when>
     <c:when test="${reportType=='recipient'}">
-    	<h1>Borrows/takings by recipients</h1>
+    	<h1>Cash amount by recipients</h1>
     </c:when>
     <c:otherwise>
     	<h1>Unknown report</h1>

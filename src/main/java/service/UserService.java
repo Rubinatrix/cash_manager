@@ -1,21 +1,19 @@
 package service;
 
+import utils.CashManagerErrorType;
 import domain.Role;
 import domain.User;
 import dto.UserDTO;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
 import org.hibernate.Query;
-import utils.AppException;
+import utils.CashManagerException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -34,11 +32,12 @@ public class UserService  {
 
     }
 
-    public User registerNewUserAccount(UserDTO accountDTO) throws AppException {
+    public User registerNewUser(UserDTO accountDTO) throws CashManagerException {
+
         if (nameExist(accountDTO.getUsername())) {
-            throw new AppException("There is an account with that name: " + accountDTO.getUsername());
+            throw new CashManagerException(CashManagerErrorType.USER_EXISTS);
         }
-        //----------------------------------------------------
+
         User user = new User();
         user.setUsername(accountDTO.getUsername());
         user.setPassword(accountDTO.getPassword());
@@ -47,14 +46,6 @@ public class UserService  {
         user.setUserRoles(roles);
         add(user);
         return user;
-    }
-
-    private boolean nameExist(String name) {
-        User user = findByName(name);
-        if (user != null) {
-            return true;
-        }
-        return false;
     }
 
     public User findByName(String name) {
@@ -106,4 +97,13 @@ public class UserService  {
         existingUser.setUsername(user.getUsername());
         session.save(existingUser);
     }
+
+    private boolean nameExist(String name) {
+        User user = findByName(name);
+        if (user != null) {
+            return true;
+        }
+        return false;
+    }
+
 }

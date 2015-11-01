@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Transactions: ${username}</title>
+<title>Cash manager</title>
 </head>
 <body>
 
@@ -14,16 +14,14 @@
 <c:url var="deleteImgUrl" value="/resources/img/delete.png" />
 <c:url var="addRegularUrl" value="/app/transaction/add/regular" />
 <c:url var="addTransferUrl" value="/app/transaction/add/transfer" />
-<c:url var="homeUrl" value="/app/homepage" />
-<c:url var="walletUrl" value="/app/wallet/list"/>
+<c:url var="accountUrl" value="/app/account/list"/>
 <c:url var="logoutUrl" value="/app/logout"/>
 
 <table style="width: 100%">
 
 <tr>
 <td style="text-align:left">
-<p><a href="${homeUrl}">home</a></p>
-<p><a href="${walletUrl}">wallets</a></p>
+<p><a href="${accountUrl}"><< Accounts</a></p>
 </td>
 <td style="text-align:right; vertical-align:top">
 Logged as <b>${username}</b>
@@ -33,10 +31,10 @@ Logged as <b>${username}</b>
 
 <tr>
 <td style="text-align:left">
-<h1>${wallet.name}</h1>
+<h1>${account.name}</h1>
 </td>
 <td style="text-align:right">
-<h2>Cash: ${amount} ${wallet.currency.name}</h2>
+<h2>Cash: ${amount} ${account.currency.name}</h2>
 </td>
 </tr>
 
@@ -47,8 +45,8 @@ Logged as <b>${username}</b>
 	<thead style="background:#d3dce3">
 		<tr>
 			<th>Date</th>
-			<th>Wallet</th>
-			<th>Category|Wallet</th>
+			<th>Account</th>
+			<th>Category|Account</th>
 			<th>Recipient</th>
             <th>Comment</th>
             <th>Amount</th>
@@ -61,11 +59,11 @@ Logged as <b>${username}</b>
 		<c:url var="deleteUrl" value="/app/transaction/delete?id=${transaction.id}" />
 		<fmt:formatDate value="${transaction.date}" var="datetime" pattern="yyyy-MM-dd HH:mm"/>
 		<tr>
-			<td><c:out value="${datetime}" /></td>
-			<td><c:out value="${transaction.wallet.name}" /></td>
+			<td style = "width: 130px"><c:out value="${datetime}" /></td>
+			<td><c:out value="${transaction.account.name}" /></td>
 			<c:choose>
                 <c:when test="${transaction.type=='TRANSFER'}">
-                    <td><c:out value="${transaction.walletTo.name}" /></td>
+                    <td><c:out value="${transaction.accountTo.name}" /></td>
                 </c:when>
                 <c:otherwise>
                     <td><c:out value="${transaction.category.name}" /></td>
@@ -82,7 +80,7 @@ Logged as <b>${username}</b>
                 </c:when>
                 <c:otherwise>
                     <c:choose>
-                    	<c:when test="${transaction.wallet.id==wallet.id}">
+                    	<c:when test="${transaction.account.id==account.id}">
                     		<td style="text-align: right; color: red"><c:out value="-${transaction.amount}" /></td>
                     	</c:when>
                     	<c:otherwise>
@@ -91,8 +89,8 @@ Logged as <b>${username}</b>
                     </c:choose>
                 </c:otherwise>
             </c:choose>
-			<td><a href="${editUrl}"><img src="${editImgUrl}"></img></a></td>
-			<td><a href="${deleteUrl}"><img src="${deleteImgUrl}"></img></a></td>
+			<td style = "width: 40px"><a href="${editUrl}"><img src="${editImgUrl}"></img></a></td>
+			<td style = "width: 40px"><a href="${deleteUrl}"><img src="${deleteImgUrl}"></img></a></td>
 		</tr>
 	</c:forEach>
 	</tbody>

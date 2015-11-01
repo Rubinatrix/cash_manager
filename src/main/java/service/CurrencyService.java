@@ -1,15 +1,15 @@
 package service;
 
+import utils.CashManagerErrorType;
 import domain.Currency;
 import domain.User;
-import domain.Wallet;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import utils.CashManagerException;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -51,18 +51,17 @@ public class CurrencyService {
         session.save(currency);
     }
 
-    public boolean delete(Long id) {
+    public void delete(Long id) throws CashManagerException {
         logger.debug("Deleting existing currency");
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery("SELECT w FROM Wallet as w WHERE w.currency.id = :currencyId");
+        Query query = session.createQuery("SELECT acc FROM Account as acc WHERE acc.currency.id = :currencyId");
         query.setParameter("currencyId", id);
         if (query.list().size() == 0) {
             Currency currency = (Currency) session.get(Currency.class, id);
             session.delete(currency);
-            return true;
         } else {
-            return false;
+            throw new CashManagerException(CashManagerErrorType.CURRENCY_DELETE);
         }
     }
 

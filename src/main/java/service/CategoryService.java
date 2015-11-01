@@ -1,7 +1,7 @@
 package service;
 
+import utils.CashManagerErrorType;
 import domain.Category;
-import domain.Currency;
 import domain.User;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import utils.CashManagerException;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -50,7 +51,7 @@ public class CategoryService {
         session.save(category);
     }
 
-    public boolean delete(Long id) {
+    public void delete(Long id) throws CashManagerException{
         logger.debug("Deleting existing category");
         Session session = sessionFactory.getCurrentSession();
 
@@ -59,9 +60,8 @@ public class CategoryService {
         if (query.list().size() == 0) {
             Category category = (Category) session.get(Category.class, id);
             session.delete(category);
-            return true;
         } else {
-            return false;
+            throw new CashManagerException(CashManagerErrorType.CATEGORY_DELETE);
         }
     }
 

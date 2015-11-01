@@ -5,22 +5,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Wallets: ${username}</title>
+<title>Cash manager</title>
 </head>
 <body>
 
 <c:url var="editImgUrl" value="/resources/img/edit.png" />
 <c:url var="deleteImgUrl" value="/resources/img/delete.png" />
 <c:url var="addUrl" value="add" />
-<c:url var="homeUrl" value="/app/homepage" />
+<c:url var="settingsUrl" value="/app/settings" />
+<c:url var="reportUrl" value="/app/report"/>
 <c:url var="logoutUrl" value="/app/logout"/>
 
 <table style="width: 100%">
 
 <tr>
 <td style="text-align:left">
-<p><a href="${homeUrl}">home</a></p>
-<h1>Wallets</h1>
+<h3><a href="${reportUrl}">Reports</a></h3>
+<h1>Accounts</h1>
+<p><a href="${settingsUrl}">Settings</a></p>
 </td>
 <td style="text-align:right; vertical-align:top">
 Logged as <b>${username}</b>
@@ -41,26 +43,26 @@ Logged as <b>${username}</b>
 		</tr>
 	</thead>
 	<tbody style="background:#ccc">
-	<c:forEach items="${walletsWithAmount}" var="walletWithAmount">
-		<c:url var="editUrl" value="/app/wallet/edit?id=${walletWithAmount[0].id}" />
-		<c:url var="deleteUrl" value="/app/wallet/delete?id=${walletWithAmount[0].id}" />
-		<c:url var="transactionUrl" value="/app/transaction/list?id=${walletWithAmount[0].id}" />
+	<c:forEach items="${accountsWithAmount}" var="accountWithAmount">
+		<c:url var="editUrl" value="/app/account/edit?id=${accountWithAmount[0].id}" />
+		<c:url var="deleteUrl" value="/app/account/delete?id=${accountWithAmount[0].id}" />
+		<c:url var="transactionUrl" value="/app/transaction/list?id=${accountWithAmount[0].id}" />
 		<tr>
-			<td><a href="${transactionUrl}"><c:out value="${walletWithAmount[0].name}" /></a></td>
-			<td><c:out value="${walletWithAmount[1]}" /></td>
-			<td><c:out value="${walletWithAmount[0].currency.name}" /></td>
-			<td><a href="${editUrl}"><img src="${editImgUrl}"></img></a></td>
-			<td><a href="${deleteUrl}"><img src="${deleteImgUrl}"></img></a></td>
+			<td><a href="${transactionUrl}"><c:out value="${accountWithAmount[0].name}" /></a></td>
+			<td><c:out value="${accountWithAmount[1]}" /></td>
+			<td><c:out value="${accountWithAmount[0].currency.name}" /></td>
+			<td style = "width: 40px"><a href="${editUrl}"><img src="${editImgUrl}"></img></a></td>
+			<td style = "width: 40px"><a href="${deleteUrl}"><img src="${deleteImgUrl}"></img></a></td>
 		</tr>
 	</c:forEach>
 	</tbody>
 </table>
 
-<c:if test="${empty walletsWithAmount}">
+<c:if test="${empty accountsWithAmount}">
 	No records found. 
 </c:if>
 
-<p><a href="${addUrl}">Create new wallet</a></p>
+<p><a href="${addUrl}">Create new account</a></p>
 
 </td>
 </tr>
