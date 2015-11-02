@@ -26,3 +26,11 @@ Web application for simple managing cash, classifying cash flow by categories (S
 9. You can delete you cash account, but if you do this, you'll lost all regular transactions with this account. Transfer transactions will be automatically converted: 
 <br>- if deleted account was in From field - this transaction will be converted to regular deposit to remaining account 
 <br>- if deleted account was in To field - this transaction will be converted to regular withdraw from remaining account
+
+<b>Demo</b>
+
+You can explore some demo example and try application before using.
+<br>Use 
+<br>login: test
+<br>password: test
+<br>for this.
