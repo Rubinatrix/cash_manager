@@ -16,13 +16,13 @@ public class AccountAmount {
     private Account account;
 
     @Column(name = "AMOUNT")
-    private Integer amount;
+    private double amount;
 
     public AccountAmount(){
 
     }
 
-    public AccountAmount(Account account, Integer amount)
+    public AccountAmount(Account account, double amount)
     {
         this.account = account;
         this.amount = amount;
@@ -44,11 +44,11 @@ public class AccountAmount {
         this.account = account;
     }
 
-    public Integer getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 }

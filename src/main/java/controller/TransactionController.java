@@ -66,7 +66,7 @@ public class TransactionController {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Account account = accountService.get(accountId);
         List<Transaction> transactions = transactionService.getAllByAccount(account);
-        Integer amount = accountService.getAmountForAccount(account);
+        double amount = accountService.getAmountForAccount(account);
 
         model.addAttribute("transactions", transactions);
         model.addAttribute("account", account);

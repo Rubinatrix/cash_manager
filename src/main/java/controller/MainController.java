@@ -25,6 +25,12 @@ public class MainController {
     @Resource(name="userService")
     private UserService userService;
 
+    @RequestMapping(value = "/help", method = RequestMethod.GET)
+    public String getHelp(Model model) {
+        logger.debug("Received request to show help");
+        return "help";
+    }
+
     @RequestMapping(value = "/settings", method = RequestMethod.GET)
     public String getSettings(Model model, Principal principal) {
         logger.debug("Received request to show settings");

@@ -33,6 +33,9 @@ Logged as <b>${username}</b>
 <tr>
 <td COLSPAN=2>
 
+<p><a href="${addRegularUrl}">New transaction</a></p>
+<p><a href="${addTransferUrl}">New transfer</a></p>
+
 <table style="border: 1px solid; width: 100%; text-align:center">
 	<thead style="background:#d3dce3">
 		<tr>
@@ -76,9 +79,6 @@ Logged as <b>${username}</b>
 <c:if test="${empty transactions}">
 	No transactions found.
 </c:if>
-
-<p><a href="${addRegularUrl}">New transaction</a></p>
-<p><a href="${addTransferUrl}">New transfer</a></p>
 
 </td>
 </tr>

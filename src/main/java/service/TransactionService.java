@@ -118,7 +118,7 @@ public class TransactionService {
         }
     }
 
-    private void changeAmount(Account account, Integer delta) {
+    private void changeAmount(Account account, double delta) {
         logger.debug("Changing existing account amount");
 
         Session session = sessionFactory.getCurrentSession();
@@ -126,15 +126,17 @@ public class TransactionService {
         Query query = session.createQuery("SELECT wa FROM AccountAmount as wa WHERE wa.account = :account");
         query.setParameter("account", account);
         AccountAmount accountAmount = (AccountAmount) query.uniqueResult();
-        accountAmount.setAmount(accountAmount.getAmount() + delta);
+
+        // using 2 numbers after dot in math operations
+        accountAmount.setAmount((Math.round(accountAmount.getAmount()*100) + Math.round(delta*100)) / 100.00);
 
         session.save(accountAmount);
     }
 
     private void proceedTransaction(Transaction existingTransaction, Transaction newTransaction) {
-        Map<Account, Integer> accountAmountMap = new HashMap<>();
+        Map<Account, Double> accountAmountMap = new HashMap<>();
         if (existingTransaction != null) {
-            Integer amount = existingTransaction.getAmount();
+            Double amount = existingTransaction.getAmount();
             switch (existingTransaction.getType()) {
                 case DEPOSIT:
                     accountAmountMap.put(existingTransaction.getAccount(), -amount);
@@ -149,11 +151,11 @@ public class TransactionService {
             }
         }
         if (newTransaction != null) {
-            Integer amount = newTransaction.getAmount();
+            Double amount = newTransaction.getAmount();
             Account account = newTransaction.getAccount();
             Account accountTo = newTransaction.getAccountTo();
-            Integer beforeAmount = accountAmountMap.get(account);
-            Integer beforeAmountTo = accountAmountMap.get(accountTo);
+            Double beforeAmount = accountAmountMap.get(account);
+            Double beforeAmountTo = accountAmountMap.get(accountTo);
             switch (newTransaction.getType()) {
                 case DEPOSIT:
                     if (beforeAmount != null) {

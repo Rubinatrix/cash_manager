@@ -39,6 +39,8 @@ public class ReportController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String getReport(Model model) {
         logger.debug("Received request to show report");
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("username", user.getUsername());
         return "report-list";
     }
 
@@ -51,7 +53,7 @@ public class ReportController {
         model.addAttribute("username", name);
         model.addAttribute("reportSettings", new ReportSettingsDTO());
         model.addAttribute("categoryAmount", new ArrayList<Object>());
-        model.addAttribute("totalAmount", 0);
+        model.addAttribute("totalAmount", 0.00);
         model.addAttribute("currencies", currencies);
         model.addAttribute("transactionTypes", new TransactionType[]{TransactionType.WITHDRAW, TransactionType.DEPOSIT});
         model.addAttribute("reportType", "category");
@@ -71,6 +73,7 @@ public class ReportController {
         model.addAttribute("username", name);
         model.addAttribute("reportSettings", reportSettings);
         model.addAttribute("categoryAmount", reportService.getCategoryAmount(user, currency, transactionType, startDate, endDate));
+        //Double totalCategoryAmount = reportService.getTotalCategoryAmount(user, currency, transactionType, startDate, endDate);
         model.addAttribute("totalAmount", reportService.getTotalCategoryAmount(user, currency, transactionType, startDate, endDate));
         model.addAttribute("currencies", currencies);
         model.addAttribute("transactionTypes", new TransactionType[]{TransactionType.WITHDRAW, TransactionType.DEPOSIT});

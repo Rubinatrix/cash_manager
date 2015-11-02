@@ -16,6 +16,7 @@
 <c:url var="addTransferUrl" value="/app/transaction/add/transfer" />
 <c:url var="accountUrl" value="/app/account/list"/>
 <c:url var="logoutUrl" value="/app/logout"/>
+<c:url var="helpUrl" value="/app/help"/>
 
 <table style="width: 100%">
 
@@ -40,6 +41,9 @@ Logged as <b>${username}</b>
 
 <tr>
 <td COLSPAN=2>
+
+<p><a href="${addRegularUrl}">New transaction</a></p>
+<p><a href="${addTransferUrl}">New transfer</a></p>
 
 <table style="border: 1px solid; width: 100%; text-align:center">
 	<thead style="background:#d3dce3">
@@ -99,9 +103,6 @@ Logged as <b>${username}</b>
 <c:if test="${empty transactions}">
 	No transactions found.
 </c:if>
-
-<p><a href="${addRegularUrl}">New transaction</a></p>
-<p><a href="${addTransferUrl}">New transfer</a></p>
 
 </td>
 </tr>

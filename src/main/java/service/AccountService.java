@@ -50,11 +50,11 @@ public class AccountService {
         return  query.list();
     }
 
-    public Integer getAmountForAccount(Account account) {
+    public double getAmountForAccount(Account account) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("SELECT wa.amount FROM AccountAmount as wa WHERE wa.account = :account");
         query.setParameter("account", account);
-        Integer amount = (Integer) query.uniqueResult();
+        double amount = (double) query.uniqueResult();
         return amount;
     }
 
@@ -69,7 +69,7 @@ public class AccountService {
         Session session = sessionFactory.getCurrentSession();
 
         // initialize account with 0 amount
-        AccountAmount accountAmount = new AccountAmount(account, 0);
+        AccountAmount accountAmount = new AccountAmount(account, 0.00);
 
         account.setUser(user);
         session.save(account);

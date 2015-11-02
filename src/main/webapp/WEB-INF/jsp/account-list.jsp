@@ -15,6 +15,7 @@
 <c:url var="settingsUrl" value="/app/settings" />
 <c:url var="reportUrl" value="/app/report"/>
 <c:url var="logoutUrl" value="/app/logout"/>
+<c:url var="helpUrl" value="/app/help"/>
 
 <table style="width: 100%">
 
@@ -27,6 +28,8 @@
 <td style="text-align:right; vertical-align:top">
 Logged as <b>${username}</b>
 <p><a href="${logoutUrl}">Logout</a></p>
+<p>...</p>
+<p>(<a href="${helpUrl}">help</a>)</p>
 </td>
 </tr>
 

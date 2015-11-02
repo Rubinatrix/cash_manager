@@ -26,15 +26,24 @@
 	<table>
 
 	    <tr>
-        	<td><form:label path="date">Date:</form:label></td>
-        	<td><form:input type="datetime-local" path="date"/></td>
+        	<td><p><form:label path="date">Date:</form:label></p></td>
+        	<td><p><form:input type="datetime-local" path="date"/></p></td>
         </tr>
 
 		<tr>
-        	<td><form:label path="account">From:</form:label></td>
+        	<td><form:label path="account">Account:</form:label></td>
         	<td><form:select required="required" path="account">
         	<c:forEach items="${accountAttribute}" var="account">
                	<option value="${account.id}" <c:if test="${account.id==transactionAttribute.account.id}">selected</c:if>>${account.name}</option>
+            </c:forEach>
+            </form:select></td>
+        </tr>
+
+        <tr>
+            <td><form:label path="type">Type:</form:label></td>
+            <td><form:select required="required" path="type">
+            <c:forEach items="${transactionTypeAttribute}" var="transactionType">
+               	<option value="${transactionType}" <c:if test="${transactionType==transactionAttribute.type}">selected</c:if>>${transactionType.name}</option>
             </c:forEach>
             </form:select></td>
         </tr>
@@ -47,30 +56,18 @@
                 <option value="${category.id}" <c:if test="${category.id==transactionAttribute.category.id}">selected</c:if>>${category.name}</option>
             </c:forEach>
             </form:select></td>
-        </tr>
-
-        <tr>
             <td><form:label path="recipient">Recipient:</form:label></td>
-        	<td><form:input path="recipient"/></td>
-        </tr>
-
-		<tr>
-            <td><form:label path="type">Type:</form:label></td>
-            <td><form:select required="required" path="type">
-            <c:forEach items="${transactionTypeAttribute}" var="transactionType">
-               	<option value="${transactionType}" <c:if test="${transactionType==transactionAttribute.type}">selected</c:if>>${transactionType.name}</option>
-            </c:forEach>
-            </form:select></td>
+            <td><form:input path="recipient"/></td>
         </tr>
 
 		<tr>
 			<td><form:label path="amount">Amount:</form:label></td>
-			<td><form:input type="number" min="0" path="amount"/></td>
+			<td><form:input type="number" min="0" step="0.01" path="amount"/></td>
 		</tr>
 
 		<tr>
-            <td><form:label path="comment">Comment:</form:label></td>
-            <td><form:input path="comment"/></td>
+            <td><p><form:label path="comment">Comment:</form:label></p></td>
+            <td><p><form:input path="comment"/></p></td>
         </tr>
 
 		<tr>

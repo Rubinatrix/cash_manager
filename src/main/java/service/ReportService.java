@@ -38,7 +38,7 @@ public class ReportService {
         return query.list();
     }
 
-    public Long getTotalCategoryAmount(User user, Currency currency, TransactionType transactionType, Date from, Date to) {
+    public Double getTotalCategoryAmount(User user, Currency currency, TransactionType transactionType, Date from, Date to) {
         logger.debug("Retrieving category report total amount");
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("SELECT -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.category is not null AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type");
@@ -47,7 +47,7 @@ public class ReportService {
         query.setParameter("user", user);
         query.setParameter("from", from);
         query.setParameter("to", to);
-        Long result = (Long) query.uniqueResult();
+        Double result = (Double) query.uniqueResult();
         return result;
     }
 
@@ -55,7 +55,7 @@ public class ReportService {
         logger.debug("Retrieving recipient report strings");
         Session session = sessionFactory.getCurrentSession();
 
-        Map<String, Long> map = new HashMap<>();
+        Map<String, Double> map = new HashMap<>();
 
         Query query_deposit = session.createQuery("SELECT t.recipient, -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type, t.recipient");
         query_deposit.setParameter("type", TransactionType.DEPOSIT);
@@ -77,14 +77,14 @@ public class ReportService {
 
         for (int i=0; i<res_deposit.size(); i++){
             String recipient = (String)((Object[]) res_deposit.get(i))[0];
-            Long amount = (Long)((Object[]) res_deposit.get(i))[1];
+            Double amount = (Double)((Object[]) res_deposit.get(i))[1];
             map.put(recipient, amount);
         }
 
         for (int i=0; i<res_withdraw.size(); i++){
             String recipient = (String)((Object[]) res_withdraw.get(i))[0];
-            Long amount = (Long)((Object[]) res_withdraw.get(i))[1];
-            Long existing_amount = map.get(recipient);
+            Double amount = (Double)((Object[]) res_withdraw.get(i))[1];
+            Double existing_amount = map.get(recipient);
             if (existing_amount!=null) {
                 map.put(recipient, existing_amount+amount);
             } else {
@@ -103,12 +103,12 @@ public class ReportService {
         return result;
     }
 
-    public Long getTotalRecipientAmount(User user, Currency currency, Date from, Date to) {
+    public Double getTotalRecipientAmount(User user, Currency currency, Date from, Date to) {
 
         logger.debug("Retrieving recipient report total amount");
         Session session = sessionFactory.getCurrentSession();
 
-        Map<String, Long> map = new HashMap<>();
+        Map<String, Double> map = new HashMap<>();
 
         Query query_deposit = session.createQuery("SELECT -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type");
         query_deposit.setParameter("type", TransactionType.DEPOSIT);
@@ -117,9 +117,9 @@ public class ReportService {
         query_deposit.setParameter("from", from);
         query_deposit.setParameter("to", to);
         query_deposit.setParameter("blank", "");
-        Long result_deposit = (Long) query_deposit.uniqueResult();
+        Double result_deposit = (Double) query_deposit.uniqueResult();
         if (result_deposit == null){
-            result_deposit = Long.valueOf(0);
+            result_deposit = Double.valueOf(0);
         }
 
         Query query_withdraw = session.createQuery("SELECT SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.recipient != :blank AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type");
@@ -129,12 +129,12 @@ public class ReportService {
         query_withdraw.setParameter("from", from);
         query_withdraw.setParameter("to", to);
         query_withdraw.setParameter("blank", "");
-        Long result_withdraw = (Long) query_withdraw.uniqueResult();
+        Double result_withdraw = (Double) query_withdraw.uniqueResult();
         if (result_withdraw == null){
-            result_withdraw = Long.valueOf(0);
+            result_withdraw = Double.valueOf(0);
         }
 
-        Long result = result_deposit + result_withdraw;
+        Double result = result_deposit + result_withdraw;
 
         return result;
 

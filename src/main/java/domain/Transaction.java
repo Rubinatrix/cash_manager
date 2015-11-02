@@ -38,7 +38,7 @@ public class Transaction {
     private String comment;
 
     @Column(name="AMOUNT")
-    private int amount;
+    private double amount;
 
     public String getStringAmount(Account account) {
         switch (type) {
@@ -121,11 +121,11 @@ public class Transaction {
         this.type = type;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 }

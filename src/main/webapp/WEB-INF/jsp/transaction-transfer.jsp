@@ -25,8 +25,8 @@
 	<table>
 
 	    <tr>
-           <td><form:label path="date">Date:</form:label></td>
-           <td><form:input type="datetime-local" path="date"/></td>
+           <td><p><form:label path="date">Date:</form:label></p></td>
+           <td><p><form:input type="datetime-local" path="date"/></p></td>
         </tr>
 
 		<tr>
@@ -50,12 +50,12 @@
 
         <tr>
             <td><form:label path="amount">Amount:</form:label></td>
-        	<td><form:input type="number" min="0" path="amount"/></td>
+        	<td><form:input type="number" min="0" step="0.01" path="amount"/></td>
        	</tr>
 
        	<tr>
-            <td><form:label path="comment">Comment:</form:label></td>
-            <td><form:input path="comment"/></td>
+            <td><p><form:label path="comment">Comment:</form:label></p></td>
+            <td><p><form:input path="comment"/></p></td>
         </tr>
 
         <tr>
