@@ -29,7 +29,12 @@ public class ReportService {
     public List<Object> getCategoryAmount(User user, Currency currency, TransactionType transactionType, Date from, Date to) {
         logger.debug("Retrieving category report strings");
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("SELECT t.category.name, -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type, t.category.id, t.category.name ORDER BY -SUM(t.amount)");
+        Query query;
+        if (transactionType == TransactionType.WITHDRAW) {
+            query = session.createQuery("SELECT t.category.name, -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type, t.category.id, t.category.name ORDER BY -SUM(t.amount)");
+        } else {
+            query = session.createQuery("SELECT t.category.name, SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type, t.category.id, t.category.name ORDER BY -SUM(t.amount)");
+        }
         query.setParameter("type", transactionType);
         query.setParameter("currency", currency);
         query.setParameter("user", user);
@@ -41,7 +46,12 @@ public class ReportService {
     public Double getTotalCategoryAmount(User user, Currency currency, TransactionType transactionType, Date from, Date to) {
         logger.debug("Retrieving category report total amount");
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("SELECT -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.category is not null AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type");
+        Query query;
+        if (transactionType == TransactionType.WITHDRAW) {
+            query = session.createQuery("SELECT -SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.category is not null AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type");
+        } else {
+            query = session.createQuery("SELECT SUM(t.amount) FROM Transaction t WHERE t.account.user = :user AND t.account.currency = :currency AND t.category is not null AND t.date >= :from AND t.date <= :to AND t.type = :type GROUP BY t.type");
+        }
         query.setParameter("type", transactionType);
         query.setParameter("currency", currency);
         query.setParameter("user", user);

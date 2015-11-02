@@ -88,7 +88,17 @@ Logged as <b>${username}</b>
 <table style="border: 1px solid; width: 100%; text-align:center">
 	<thead style="background:#d3dce3">
 		<tr>
-			<th>Entity</th>
+			<c:choose>
+                <c:when test="${reportType=='category'}">
+            		<th>Category</th>
+                </c:when>
+                <c:when test="${reportType=='recipient'}">
+                	<th>Recipient</th>
+                </c:when>
+                <c:otherwise>
+                	<h1>Unknown entity</h1>
+                </c:otherwise>
+            </c:choose>
 			<th>Amount</th>
 			<c:if test="${reportType=='category'}">
 				<th>% total</th>

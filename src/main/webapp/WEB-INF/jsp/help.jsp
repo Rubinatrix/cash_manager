@@ -13,45 +13,50 @@
 <c:url var="accountUrl" value="/app/account/list"/>
 
 <a href="${accountUrl}"><< Accounts</a>
-<h2>Tips</h2>
+<h2>Hints & Tips</h2>
 
 <p>
-1. The main function of this web application is to be some kind of notepad for your cash operations in real life. And then allow you to make simple analysis using reports.
+1. The main purpose of this web application is to be some kind of notepad for your cash operations in real life. And then to allow you to make simple analysis using reports.
 </p>
 
 <p>
-2. Before working with transactions you have to enter your currencies and cash flow categories (use "settings")
+2. Before working with transactions you have to make lists of your currencies and cash flow categories (use "settings")
 </p>
 
 <p>
-3. You can store your cash operations by using transactions of one of three types:
-<div>- regular "deposit", when you earn money
-<div>- regular "withdraw"", when you spend money
-<div>- "transfer"", when you move you money from one place to another
+3. You can store your cash operations by using transactions of three types:
+<br>- regular "deposit", when you earn (or borrow) money
+<br>- regular "withdraw"", when you spend (or lend) money
+<br>- "transfer"", when you move you money from one place to another
 </p>
 
 <p>
-4. When you add regular transaction, you can use one of two fields: category or recipient.
+4. You can see all transactions with specific account by simply clicking on account name in "accounts" list (the main page).
+When you create new transaction from this account transaction list - current account will be set to it by default.
+</p>
+
+<p>
+5. When you add regular transaction, you can use one of two fields: category or recipient.
 Use "category" when you spend or earn money, and use "recipient" when you borrow money from somebody or when somebody borrow it from you.
 </p>
 
 <p>
-5. Application won't allow you to add transfer transaction between accounts with different currencies.
+6. Application won't allow you to add transfer transaction between accounts with different currencies.
 </p>
 
 <p>
-6. Application won't allow you to delete currency, if there are one or more accounts with this currency.
+7. Application won't allow you to delete currency, if there are one or more accounts with this currency.
 </p>
 
 <p>
-7. Application won't allow you to delete category, if there are one or more transactions with this category.
+8. Application won't allow you to delete category, if there are one or more transactions with this category.
 </p>
 
 <p>
-8. You can delete you account, but if you do this, you'll lost all regular transactions with this account.
+9. You can delete you cash account, but if you do this, you'll lost all regular transactions with this account.
 Transfer transactions will be automatically converted:
-<div>- if deleted account was in From field - this transaction will be converted to regular deposit to remaining account
-<div>- if deleted account was in To field - this transaction will be converted to regular withdraw from remaining account
+<br>- if deleted account was in From field - this transaction will be converted to regular deposit to remaining account
+<br>- if deleted account was in To field - this transaction will be converted to regular withdraw from remaining account
 </p>
 
 </body>

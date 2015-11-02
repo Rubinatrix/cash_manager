@@ -73,7 +73,6 @@ public class ReportController {
         model.addAttribute("username", name);
         model.addAttribute("reportSettings", reportSettings);
         model.addAttribute("categoryAmount", reportService.getCategoryAmount(user, currency, transactionType, startDate, endDate));
-        //Double totalCategoryAmount = reportService.getTotalCategoryAmount(user, currency, transactionType, startDate, endDate);
         model.addAttribute("totalAmount", reportService.getTotalCategoryAmount(user, currency, transactionType, startDate, endDate));
         model.addAttribute("currencies", currencies);
         model.addAttribute("transactionTypes", new TransactionType[]{TransactionType.WITHDRAW, TransactionType.DEPOSIT});
