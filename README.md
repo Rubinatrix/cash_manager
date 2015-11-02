@@ -1,6 +1,6 @@
 #  Cash Manager
 
-Web application for simple managing cash, classifying cash flow by categories.
+Web application for simple managing cash, classifying cash flow by categories (Spring mvc, security, jsp, Hibernate, hsqldb)
 
 <b>Hints & Tips</b>
 
