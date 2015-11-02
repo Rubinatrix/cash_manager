@@ -9,9 +9,9 @@ Hints & Tips
 2. Before working with transactions you have to make lists of your currencies and cash flow categories (use "settings")
 
 3. You can store your cash operations by using transactions of three types: 
-* regular "deposit", when you earn (or borrow) money 
-* regular "withdraw"", when you spend (or lend) money 
-* "transfer"", when you move you money from one place to another
+- regular "deposit", when you earn (or borrow) money 
+- regular "withdraw"", when you spend (or lend) money 
+- "transfer"", when you move you money from one place to another
 
 4. You can see all transactions with specific account by simply clicking on account name in "accounts" list (the main page). When you create new transaction from this account transaction list - current account will be set to it by default.
 
