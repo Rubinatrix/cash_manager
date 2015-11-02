@@ -2,7 +2,7 @@
 
 Web application for simple managing cash, classifying cash flow by categories.
 
-Hints & Tips
+<b>Hints & Tips</b>
 
 1. The main purpose of this web application is to be some kind of notepad for your cash operations in real life. And then to allow you to make simple analysis using reports.
 
