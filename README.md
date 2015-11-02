@@ -8,9 +8,10 @@ Hints & Tips
 
 2. Before working with transactions you have to make lists of your currencies and cash flow categories (use "settings")
 
-3. You can store your cash operations by using transactions of three types: regular "deposit", when you earn (or borrow) money 
-- regular "withdraw"", when you spend (or lend) money 
-- "transfer"", when you move you money from one place to another
+3. You can store your cash operations by using transactions of three types: 
+<br>- regular "deposit", when you earn (or borrow) money 
+<br>- regular "withdraw"", when you spend (or lend) money 
+<br>- "transfer"", when you move you money from one place to another
 
 4. You can see all transactions with specific account by simply clicking on account name in "accounts" list (the main page). When you create new transaction from this account transaction list - current account will be set to it by default.
 
@@ -23,5 +24,5 @@ Hints & Tips
 8. Application won't allow you to delete category, if there are one or more transactions with this category.
 
 9. You can delete you cash account, but if you do this, you'll lost all regular transactions with this account. Transfer transactions will be automatically converted: 
-* if deleted account was in From field - this transaction will be converted to regular deposit to remaining account 
-* if deleted account was in To field - this transaction will be converted to regular withdraw from remaining account
+<br>- if deleted account was in From field - this transaction will be converted to regular deposit to remaining account 
+<br>- if deleted account was in To field - this transaction will be converted to regular withdraw from remaining account
