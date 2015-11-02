@@ -8,8 +8,7 @@ Hints & Tips
 
 2. Before working with transactions you have to make lists of your currencies and cash flow categories (use "settings")
 
-3. You can store your cash operations by using transactions of three types: 
-- regular "deposit", when you earn (or borrow) money 
+3. You can store your cash operations by using transactions of three types: regular "deposit", when you earn (or borrow) money 
 - regular "withdraw"", when you spend (or lend) money 
 - "transfer"", when you move you money from one place to another
 
