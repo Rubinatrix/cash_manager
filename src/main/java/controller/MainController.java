@@ -17,7 +17,6 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/")
 public class MainController {
 
     protected static Logger logger = Logger.getLogger("org/controller");

@@ -1,6 +1,5 @@
 package domain;
 
-import org.hibernate.annotations.CollectionOfElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +22,7 @@ public class User implements UserDetails {
     @Column(name = "PASSWORD")
     private String password;
 
-    @CollectionOfElements(fetch = FetchType.EAGER, targetElement = Role.class)
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = Role.class)
     @JoinTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
     @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)

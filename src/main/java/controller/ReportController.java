@@ -36,7 +36,7 @@ public class ReportController {
     @Resource(name="currencyService")
     private CurrencyService currencyService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getReport(Model model) {
         logger.debug("Received request to show report");
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

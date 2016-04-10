@@ -11,10 +11,7 @@ import utils.CashManagerErrorType;
 import utils.CashManagerException;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("transactionService")
 @Transactional
@@ -24,6 +21,10 @@ public class TransactionService {
 
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public List<Transaction> getAll() {
         logger.debug("Retrieving all transactions");
@@ -110,7 +111,7 @@ public class TransactionService {
     }
 
     // returns null if there is no errors
-    private CashManagerErrorType checkTransaction(Transaction transaction) {
+    public CashManagerErrorType checkTransaction(Transaction transaction) {
         if ((transaction.getType() == TransactionType.TRANSFER) && (!transaction.getAccount().getCurrency().equals(transaction.getAccountTo().getCurrency()))) {
             return CashManagerErrorType.TRANSFER_CROSS_CURRENCY;
         } else {
